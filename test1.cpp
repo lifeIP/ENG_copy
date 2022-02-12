@@ -6,7 +6,12 @@ int main() {
 	std::string FILEname = "base.txt";
 	H.set_fileName(FILEname);
 	H.get_fileName(H_answer);
-	H.additional_recording(FILEname);
+	while (true) {
+		std::string some_string;
+		std::cin >> some_string;
+		if (some_string == "0") break;
+		H.additional_recording(some_string);
+	}
 	std::cout << H_answer;
 	int s;
 	s = H.counter();

@@ -2,6 +2,10 @@
 #include <iostream>
 #include <fstream>
 #include <string>
+#include <vector>
+#include <algorithm>
+
+
 typedef std::string str;
 
 class C_Test
@@ -15,12 +19,15 @@ public:
 	void set_fileName(str &FileName) {
 		fileName = FileName;
 	}
+
 	void get_fileName(str &container) {
 		container = fileName;
 	}
+
 	void closeFile() {//Закрывает файл
 		file.close();
 	}
+
 	void additional_recording(str &add_str) {//Добавляет записи
 		closeFile();
 		while (!file.is_open()) {
@@ -29,6 +36,7 @@ public:
 		file << add_str <<"\n";
 		closeFile();
 	}
+
 	int counter() {
 		closeFile();
 		while (!file.is_open()) {
@@ -43,6 +51,7 @@ public:
 		closeFile(); 
 		return counter_value;
 	}
+
 	void doCopyFile(str &file1, str endfile) {
 		std::fstream fileSource;
 		std::fstream fileFinite;
@@ -56,16 +65,25 @@ public:
 		fileSource.close();
 		fileFinite.close();
 	}
+	void doSorting(str& file1, str& file2) {
+		std::ifstream in(file1);
+		std::vector<str> vs;
+		str ss;
+		while (getline(in, ss)) vs.push_back(ss);
+		sort(vs.begin(), vs.end());
+		std::ofstream on(file2);
+		copy(vs.begin(), vs.end(), std::ostream_iterator<str>(on, "\n"));
+		in.close();
+		on.close();
+	}
+
 	bool sorting() {
+		file.close();
 		std::fstream sorter;
 		sorter.open(sortFile, std::ios::out |std::ios::trunc);
 		sorter.close();
-		while (!sorter.is_open()) {
-			sorter.open(sortFile, std::ios::in | std::ios::app );
-		} 
-		doCopyFile(fileName, sortFile);
-		
-		sorter.close();
+
+		doSorting(fileName, sortFile);
 		return true;
 	}
 
