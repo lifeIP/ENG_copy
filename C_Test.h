@@ -8,7 +8,8 @@ class C_Test
 {
 private:
 	/* список свойств и методов для использования внутри класса */
-	std::string fileName = "File name";
+	std::string fileName = "base.txt";
+	std::string sortFile = "sorter.txt";
 	std:: fstream file;
 public:
 	void set_fileName(str &FileName) {
@@ -17,31 +18,48 @@ public:
 	void get_fileName(str &container) {
 		container = fileName;
 	}
-	void openFile() {
-		file.open(fileName, std::ios_base::out | std::ios_base::app);
-	}
-	bool get_status() const /* Константная функция - не может менять атрибуты класса. Только получать их */
-	{
-		return file.is_open();
-	}
 	void closeFile() {//Закрывает файл
 		file.close();
 	}
 	void additional_recording(str &add_str) {//Добавляет записи
+		closeFile();
+		while (!file.is_open()) {
+			file.open(fileName, std::ios_base::out | std::ios_base::app);
+		}
 		file << add_str <<"\n";
+		closeFile();
 	}
 	int counter() {
 		closeFile();
-		file.open(fileName, std::ios::in);
+		while (!file.is_open()) {
+			file.open(fileName);
+		}
 		int counter_value = 0;
 		std::string s;
-		while (!file.eof()) {
+		while (file.peek()!=EOF) {
 			std::getline(file,s);
 			counter_value++;
 		}//Функция peek возвращает символ, который должен быть прочитан следующей функцией чтения потока. В частности, это позволяет распознать конец потока
 		closeFile(); 
 		return counter_value;
 	}
+	bool sorting() {
+		closeFile();
+		while (!file.is_open()) {
+			file.open(fileName);
+		}
+		std::fstream sorter;
+		sorter.open(sortFile, std::ios::out |std::ios::trunc);
+		sorter.close();
+		while (!sorter.is_open()) {
+			sorter.open(sortFile, std::ios::in | std::ios::app );
+		} 
+		
+		
+		closeFile();
+		return true;
+	}
+
 
 	/* список методов доступных другим функциям и объектам программы */
 protected:
