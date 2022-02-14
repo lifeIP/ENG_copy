@@ -5,7 +5,6 @@
 #include <vector>
 #include <algorithm>
 
-
 typedef std::string str;
 
 class C_Test
@@ -14,31 +13,40 @@ private:
 	/* список свойств и методов для использования внутри класса */
 	std::string fileName = "base.txt";
 	std::string sortFile = "sorter.txt";
-	std:: fstream file;
+	
 public:
-	void set_fileName(str &FileName) {
+	C_Test() {//Для создания отсортированной копии 
+		sorting();
+	}
+	C_Test(str &someString) {//Для добавления записей 
+		additional_recording(someString);
+	}
+	C_Test(str & file1, str& endfile) {//Для резервного копирования записей 
+		doCopyFile(file1, endfile);
+	}
+	
+
+	void set_fileName(str &FileName, str &sort_file_name) {
 		fileName = FileName;
+		sortFile = sort_file_name;
 	}
 
-	void get_fileName(str &container) {
-		container = fileName;
-	}
-
-	void closeFile() {//Закрывает файл
-		file.close();
+	void get_fileName(str &filename, str &sort_file_name) {
+		filename = fileName;
+		sort_file_name = sortFile;
 	}
 
 	void additional_recording(str &add_str) {//Добавляет записи
-		closeFile();
+		std::fstream file;
 		while (!file.is_open()) {
 			file.open(fileName, std::ios_base::out | std::ios_base::app);
 		}
 		file << add_str <<"\n";
-		closeFile();
+		file.close();
 	}
 
 	int counter() {
-		closeFile();
+		std::fstream file;
 		while (!file.is_open()) {
 			file.open(fileName);
 		}
@@ -48,7 +56,7 @@ public:
 			std::getline(file,s);
 			counter_value++;
 		}//Функция peek возвращает символ, который должен быть прочитан следующей функцией чтения потока. В частности, это позволяет распознать конец потока
-		closeFile(); 
+		file.close();
 		return counter_value;
 	}
 
@@ -77,16 +85,14 @@ public:
 		on.close();
 	}
 
-	bool sorting() {
-		file.close();
+	void sorting() {
+		std::fstream file;
 		std::fstream sorter;
 		sorter.open(sortFile, std::ios::out |std::ios::trunc);
 		sorter.close();
-
 		doSorting(fileName, sortFile);
-		return true;
 	}
-
+	~C_Test() {}
 
 	/* список методов доступных другим функциям и объектам программы */
 protected:
