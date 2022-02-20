@@ -8,6 +8,8 @@ int main() {
 	setlocale(LC_ALL, "RUS");
 	std::string file1 = "base.txt";
 	std::string file2 = "base2.txt";
+	std::string file3 = "base3.txt";
+	std::string file4 = "base4.txt";
 	int n = 0;
 	std::string some_info;
 	while (true) {
@@ -18,4 +20,5 @@ int main() {
 	}
 	doSorting(file1, file2);
 	std::cout << n;
+	dataParser(file3, file4);
 }

@@ -60,3 +60,22 @@ void doCopyFile(str& file1, str file2) {
 	fileSource.close();
 	fileFinite.close();
 }
+
+
+void dataParser(str& file1, str& file2) {
+	std::fstream fileSource;
+	std::fstream fileFinite;
+	fileSource.open(file1);
+	fileFinite.open(file2, std::ios::in | std::ios::app);
+	str copy_text_1;
+	str copy_text_2;
+	str copy_text_3;
+	while (fileSource.peek() != EOF) {
+		std::getline(fileSource, copy_text_1, '[');
+		std::getline(fileSource, copy_text_2, ']');
+		std::getline(fileSource, copy_text_3);
+		fileFinite << copy_text_1 + "###" + copy_text_3 + "###" + copy_text_2 + "\n";
+	}	
+	fileSource.close();
+	fileFinite.close();
+}
