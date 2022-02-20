@@ -7,11 +7,10 @@
 
 typedef std::string str;
 
-
 void doSorting(str& file1, str& file2) {
 	std::fstream file;
 	std::fstream sorter;
-	sorter.open(file2, std::ios::out | std::ios::trunc);
+	sorter.open(file2);
 	sorter.close();
 	std::ifstream in(file1);
 	std::vector<str> vs;
@@ -24,7 +23,7 @@ void doSorting(str& file1, str& file2) {
 	on.close();
 }
 
-void additional_recording(str & fileName ,str& add_str) {//Добавляет записи
+void additional_recording(str& fileName, str& add_str) {//Добавляет записи
 	std::fstream file;
 	while (!file.is_open()) {
 		file.open(fileName, std::ios_base::out | std::ios_base::app);
@@ -33,7 +32,7 @@ void additional_recording(str & fileName ,str& add_str) {//Добавляет записи
 	file.close();
 }
 
-void counter(str &fileName, int& res) {
+void counter(str& fileName, int& res) {
 	std::fstream file;
 	while (!file.is_open()) {
 		file.open(fileName);
